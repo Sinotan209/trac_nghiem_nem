@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Vật lí 10: Chuyển động Ném ngang & Ném xiên</title>
+    <style>
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-muted: #f1f5f9;
+            --text-main: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-soft: #eef2ff;
+            --success: #059669;
+            --success-soft: #ecfdf5;
+            --success-border: #6ee7b7;
+            --danger: #e11d48;
+            --danger-soft: #fff1f2;
+            --danger-border: #fda4af;
+            --warning: #d97706;
+            --warning-soft: #fffbeb;
+            --warning-border: #fcd34d;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Math Formatting Classes (100% Pure CSS & Unicode, zero external fonts) */
+        .math {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 1.08em;
+            white-space: nowrap;
+        }
+        .math-wrap {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 1.08em;
+        }
+        .vec {
+            position: relative;
+            display: inline-block;
+            font-style: italic;
+        }
+        .vec::before {
+            content: "→";
+            position: absolute;
+            top: -0.62em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.72em;
+            font-style: normal;
+            line-height: 1;
+        }
+        .frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 3px;
+            font-size: 0.92em;
+            line-height: 1.15;
+        }
+        .frac > .num {
+            border-bottom: 1.2px solid currentColor;
+            padding: 0 4px 2px 4px;
+            text-align: center;
+        }
+        .frac > .den {
+            padding: 2px 4px 0 4px;
+            text-align: center;
+        }
+        .sqrt {
+            display: inline-flex;
+            align-items: stretch;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
+        .sqrt-sign {
+            font-size: 1.15em;
+            line-height: 1;
+            padding-right: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .sqrt-body {
+            border-top: 1.2px solid currentColor;
+            padding: 1px 3px 0 2px;
+            display: inline-flex;
+            align-items: center;
+        }
+        sub, sup {
+            font-size: 0.74em;
+            line-height: 0;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            box-shadow: var(--shadow-sm);
+        }
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .header-inner {
+            padding: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .header-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.25;
+        }
+        .brand-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .mode-group {
+            display: inline-flex;
+            background: var(--bg-muted);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .mode-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-body);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .mode-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text-body);
+            transition: all 0.15s ease;
+        }
+        .action-btn:hover {
+            background: var(--bg-muted);
+        }
+        .action-btn.danger {
+            background: var(--danger-soft);
+            border-color: var(--danger-border);
+            color: var(--danger);
+        }
+        .action-btn.danger:hover {
+            background: #ffe4e6;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid var(--bg-muted);
+        }
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tab-btn {
+            border: none;
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            background: var(--bg-muted);
+            color: var(--text-body);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .tab-btn:hover {
+            background: #e2e8f0;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .header-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Main Layout */
+        .main-content {
+            padding: 20px 0 40px 0;
+        }
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        @media (min-width: 960px) {
+            .layout-grid {
+                grid-template-columns: minmax(0, 1fr) 320px;
+            }
+            .sidebar {
+                position: sticky;
+                top: 132px;
+            }
+        }
+
+        /* Result Banner */
+        .result-banner {
+            display: none;
+            background: #ffffff;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+        }
+        .result-banner.show {
+            display: block;
+        }
+        .result-flex {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--primary-soft);
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+        .result-score {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .result-score span {
+            color: var(--primary);
+        }
+        .result-feedback {
+            font-size: 14px;
+            color: var(--text-body);
+            margin-top: 4px;
+        }
+        .stats-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-page);
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .stat-val {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .stat-val.correct { color: var(--success); }
+        .stat-val.wrong { color: var(--danger); }
+        .stat-val.unanswered { color: var(--text-muted); }
+        .stat-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border-color);
+        }
+
+        /* Question Card */
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .q-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            scroll-margin-top: 140px;
+            transition: border-color 0.2s ease;
+        }
+        .q-card.correct {
+            border-color: var(--success-border);
+        }
+        .q-card.wrong {
+            border-color: var(--danger-border);
+        }
+        .q-card.unanswered-warn {
+            border-color: var(--warning-border);
+        }
+        .q-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .q-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .q-num {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary);
+        }
+        .part-tag {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        .part-tag.horizontal {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .part-tag.projectile {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+        .status-tag {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 6px;
+        }
+        .status-tag.correct {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+        .status-tag.wrong {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+        .status-tag.unanswered {
+            background: var(--warning-soft);
+            color: var(--warning);
+        }
+
+        .q-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        /* Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .opt-btn {
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text-body);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .opt-btn:hover:not(:disabled) {
+            background: var(--bg-page);
+            border-color: #cbd5e1;
+        }
+        .opt-btn:disabled {
+            cursor: default;
+        }
+        .opt-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: var(--bg-muted);
+            color: var(--text-body);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .opt-text {
+            padding-top: 2px;
+            flex: 1;
+        }
+
+        /* Option States */
+        .opt-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .opt-btn.selected .opt-letter {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+        }
+
+        .opt-btn.correct-ans {
+            border-color: var(--success);
+            background: var(--success-soft);
+            color: #064e3b;
+            font-weight: 500;
+        }
+        .opt-btn.correct-ans .opt-letter {
+            background: var(--success);
+            border-color: var(--success);
+            color: #ffffff;
+        }
+
+        .opt-btn.wrong-ans {
+            border-color: var(--danger);
+            background: var(--danger-soft);
+            color: #881337;
+            font-weight: 500;
+        }
+        .opt-btn.wrong-ans .opt-letter {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: #ffffff;
+        }
+
+        .opt-btn.dimmed {
+            opacity: 0.68;
+            background: var(--bg-page);
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            margin-top: 14px;
+            padding: 13px 15px;
+            border-radius: var(--radius-md);
+            background: var(--bg-page);
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-body);
+            line-height: 1.6;
+        }
+        .explanation-title {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        /* Sidebar Palette */
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .sidebar-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .progress-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 8px;
+            background: var(--bg-muted);
+            color: var(--text-body);
+        }
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-muted);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.25s ease;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--bg-muted);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .dot.empty { background: var(--bg-muted); border: 1px solid #cbd5e1; }
+        .dot.answered { background: var(--primary); }
+        .dot.correct { background: var(--success); }
+        .dot.wrong { background: var(--danger); }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+        .pal-btn {
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: var(--bg-muted);
+            color: var(--text-body);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.12s ease;
+        }
+        .pal-btn:hover {
+            background: #e2e8f0;
+        }
+        .pal-btn.answered {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .pal-btn.correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .pal-btn.wrong {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .pal-btn.unanswered {
+            background: var(--warning-soft);
+            border-color: var(--warning-border);
+            color: var(--warning);
+        }
+
+        .submit-box {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--bg-muted);
+            display: none;
+        }
+        .submit-box.show {
+            display: block;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+        .submit-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .tip-box {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--bg-muted);
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Custom Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 50;
+        }
+        .modal-backdrop.show {
+            display: flex;
+        }
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            max-width: 420px;
+            width: 100%;
+            padding: 22px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
+        }
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+        .modal-msg {
+            font-size: 14px;
+            color: var(--text-body);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        .modal-btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        .modal-btn.cancel {
+            background: var(--bg-muted);
+            color: var(--text-body);
+        }
+        .modal-btn.confirm {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            background: var(--text-main);
+            color: #ffffff;
+            font-size: 13px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            display: none;
+            z-index: 60;
+        }
+        .toast.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <div class="header-top">
+                    <div class="brand">
+                        <div class="brand-badge">VL10</div>
+                        <div>
+                            <div class="brand-title">Trắc nghiệm Lý thuyết Vật lí 10</div>
+                            <div class="brand-sub">Chủ đề: Chuyển động ném ngang &amp; Chuyển động ném xiên (40 câu)</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="mode-group" role="group">
+                            <button id="btn-mode-practice" class="mode-btn active" onclick="setMode('practice')">Luyện tập (Xem ngay)</button>
+                            <button id="btn-mode-exam" class="mode-btn" onclick="setMode('exam')">Kiểm tra (Chấm điểm)</button>
+                        </div>
+                        <button class="action-btn" onclick="shuffleQuiz()" title="Xáo trộn thứ tự câu hỏi và đáp án">
+                            <span>↻ Xáo trộn</span>
+                        </button>
+                        <button class="action-btn danger" onclick="resetQuiz()" title="Làm lại từ đầu">
+                            <span>✕ Làm lại</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-tabs">
+                        <button id="tab-all" class="tab-btn active" onclick="setFilter('all')">Tất cả (40 câu)</button>
+                        <button id="tab-horizontal" class="tab-btn" onclick="setFilter('horizontal')">Phần 1: Ném ngang (Câu 1 – 20)</button>
+                        <button id="tab-projectile" class="tab-btn" onclick="setFilter('projectile')">Phần 2: Ném xiên (Câu 21 – 40)</button>
+                    </div>
+                    <div class="header-note">Quy ước: Bỏ qua lực cản không khí, g là hằng số.</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Exam Result Banner -->
+            <div id="result-banner" class="result-banner">
+                <div class="result-flex">
+                    <div>
+                        <span class="result-badge">KẾT QUẢ BÀI KIỂM TRA</span>
+                        <div class="result-score">Điểm số: <span id="score-display">0.0</span> / 10</div>
+                        <div id="score-feedback" class="result-feedback"></div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stat-item">
+                            <div class="stat-label">Số câu đúng</div>
+                            <div id="stat-correct" class="stat-val correct">0</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-label">Số câu sai</div>
+                            <div id="stat-wrong" class="stat-val wrong">0</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-label">Chưa làm</div>
+                            <div id="stat-unanswered" class="stat-val unanswered">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout-grid">
+                <!-- Questions Container -->
+                <div id="questions-container" class="questions-list"></div>
+
+                <!-- Sidebar Palette -->
+                <aside class="sidebar">
+                    <div class="sidebar-card">
+                        <div class="sidebar-head">
+                            <span class="sidebar-title">Danh sách câu hỏi</span>
+                            <span id="progress-text" class="progress-badge">0 / 40 câu</span>
+                        </div>
+
+                        <div class="progress-track">
+                            <div id="progress-bar" class="progress-fill"></div>
+                        </div>
+
+                        <div class="legend">
+                            <div class="legend-item"><span class="dot empty"></span><span>Chưa làm</span></div>
+                            <div class="legend-item"><span class="dot answered"></span><span>Đã chọn</span></div>
+                            <div class="legend-item"><span class="dot correct"></span><span>Đúng</span></div>
+                            <div class="legend-item"><span class="dot wrong"></span><span>Sai</span></div>
+                        </div>
+
+                        <div id="question-palette" class="palette-grid"></div>
+
+                        <div id="exam-submit-box" class="submit-box">
+                            <button id="btn-submit-exam" class="submit-btn" onclick="confirmSubmitExam()">Nộp bài &amp; Chấm điểm</button>
+                        </div>
+
+                        <div id="practice-info-box" class="tip-box">
+                            <strong>Mẹo:</strong> Bạn đang ở chế độ <em>Luyện tập</em>. Chọn một phương án bất kỳ để kiểm tra đáp án và xem giải thích ngay lập tức.
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Confirm Modal -->
+    <div id="custom-modal" class="modal-backdrop">
+        <div class="modal-card">
+            <div id="modal-title" class="modal-title">Xác nhận</div>
+            <div id="modal-message" class="modal-msg"></div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeModal()">Tiếp tục làm bài</button>
+                <button id="modal-confirm" class="modal-btn confirm">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Helper functions for clean HTML math formatting (Zero external libraries)
+        const frac = (num, den) => `<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
+        const sqrt = (body) => `<span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">${body}</span></span>`;
+        const vec = (sym) => `<span class="vec">${sym}</span>`;
+
+        // 40 Theory Questions formatted with pure Unicode + HTML + CSS Math
+        const RAW_QUESTIONS = [
+            // --- PHẦN 1: CHUYỂN ĐỘNG NÉM NGANG (1 - 20) ---
+            {
+                id: 1,
+                part: 'horizontal',
+                question: `Chuyển động ném ngang là chuyển động của một vật được ném theo phương nằm ngang với vận tốc ban đầu <span class="math">${vec('v')}<sub>0</sub></span> và chỉ chịu tác dụng của`,
+                options: [
+                    'lực ném ban đầu.',
+                    'trọng lực.',
+                    'lực cản của không khí.',
+                    'phản lực của mặt đất.'
+                ],
+                correct: 1,
+                explanation: `Sau khi rời khỏi thiết bị ném, nếu bỏ qua lực cản của không khí, vật ném ngang chỉ chịu tác dụng duy nhất của trọng lực <span class="math">${vec('P')} = m${vec('g')}</span> hướng thẳng đứng xuống dưới.`
+            },
+            {
+                id: 2,
+                part: 'horizontal',
+                question: `Xét chuyển động của vật ném ngang trong hệ trục tọa độ <span class="math">Oxy</span> có gốc <span class="math">O</span> tại vị trí ném, trục <span class="math">Ox</span> hướng theo vectơ vận tốc ban đầu <span class="math">${vec('v')}<sub>0</sub></span>, trục <span class="math">Oy</span> thẳng đứng hướng xuống. Chuyển động thành phần của vật trên trục <span class="math">Ox</span> là`,
+                options: [
+                    'chuyển động thẳng đều.',
+                    'chuyển động thẳng nhanh dần đều.',
+                    'chuyển động thẳng chậm dần đều.',
+                    'sự rơi tự do.'
+                ],
+                correct: 0,
+                explanation: `Theo phương nằm ngang <span class="math">Ox</span>, hợp lực tác dụng lên vật bằng <span class="math">0</span> (<span class="math">F<sub>x</sub> = 0</span>) nên gia tốc <span class="math">a<sub>x</sub> = 0</span>. Do đó vật chuyển động thẳng đều với vận tốc không đổi <span class="math">v<sub>x</sub> = v<sub>0</sub></span>.`
+            },
+            {
+                id: 3,
+                part: 'horizontal',
+                question: `Trong chuyển động ném ngang (chọn trục <span class="math">Oy</span> thẳng đứng hướng xuống dưới), chuyển động thành phần của vật theo phương thẳng đứng <span class="math">Oy</span> là`,
+                options: [
+                    `chuyển động thẳng đều với vận tốc <span class="math">v<sub>0</sub></span>.`,
+                    `chuyển động thẳng chậm dần đều với gia tốc <span class="math">−g</span>.`,
+                    'chuyển động rơi tự do với vận tốc ban đầu bằng không.',
+                    'chuyển động tròn đều.'
+                ],
+                correct: 2,
+                explanation: `Theo phương thẳng đứng <span class="math">Oy</span>, vận tốc ban đầu của vật bằng <span class="math">0</span> (<span class="math">v<sub>0y</sub> = 0</span>) và vật chỉ chịu tác dụng của trọng lực gây ra gia tốc <span class="math">${vec('g')}</span> hướng xuống nên chuyển động thành phần này tương đương sự rơi tự do.`
+            },
+            {
+                id: 4,
+                part: 'horizontal',
+                question: 'Dạng quỹ đạo của một vật bị ném ngang (bỏ qua sức cản không khí) là',
+                options: [
+                    'một đường thẳng nghiêng góc.',
+                    'một cung tròn.',
+                    'một nhánh của đường parabol.',
+                    'một đường hypebol.'
+                ],
+                correct: 2,
+                explanation: `Từ phương trình <span class="math">x = v<sub>0</sub>t</span> và <span class="math">y = ${frac('1', '2')}gt<sup>2</sup></span>, khử <span class="math">t</span> ta được phương trình quỹ đạo <span class="math">y = ${frac('g', '2v<sub>0</sub><sup>2</sup>')}x<sup>2</sup></span> (với <span class="math">x ≥ 0</span>), đây là một nhánh của đường parabol có đỉnh tại điểm ném <span class="math">O</span>.`
+            },
+            {
+                id: 5,
+                part: 'horizontal',
+                question: `Một vật được ném theo phương ngang từ độ cao <span class="math">h</span> với vận tốc ban đầu <span class="math">v<sub>0</sub></span>. Thời gian rơi của vật cho tới khi chạm đất phụ thuộc vào`,
+                options: [
+                    `vận tốc ban đầu <span class="math">v<sub>0</sub></span> và khối lượng <span class="math">m</span> của vật.`,
+                    `độ cao <span class="math">h</span> và gia tốc rơi tự do <span class="math">g</span>.`,
+                    `vận tốc ban đầu <span class="math">v<sub>0</sub></span> và độ cao <span class="math">h</span>.`,
+                    `khối lượng <span class="math">m</span> và độ cao <span class="math">h</span>.`
+                ],
+                correct: 1,
+                explanation: `Thời gian rơi của vật ném ngang bằng thời gian rơi tự do từ cùng độ cao: <span class="math">t = ${sqrt(frac('2h', 'g'))}</span>. Công thức chỉ phụ thuộc vào độ cao <span class="math">h</span> và gia tốc trọng trường <span class="math">g</span>, không phụ thuộc vào <span class="math">v<sub>0</sub></span> hay khối lượng <span class="math">m</span>.`
+            },
+            {
+                id: 6,
+                part: 'horizontal',
+                question: `Hai viên bi có khối lượng <span class="math">m<sub>1</sub> &gt; m<sub>2</sub></span> được ném ngang đồng thời từ cùng một độ cao <span class="math">h</span> với cùng vận tốc ban đầu <span class="math">v<sub>0</sub></span>. Kết luận nào sau đây là đúng?`,
+                options: [
+                    `Viên bi <span class="math">m<sub>1</sub></span> chạm đất trước và bay xa hơn viên bi <span class="math">m<sub>2</sub></span>.`,
+                    `Viên bi <span class="math">m<sub>2</sub></span> chạm đất trước nhưng hai viên bi bay xa bằng nhau.`,
+                    'Hai viên bi chạm đất cùng một lúc và có tầm bay xa bằng nhau.',
+                    `Hai viên bi chạm đất cùng một lúc nhưng viên bi <span class="math">m<sub>1</sub></span> bay xa hơn.`
+                ],
+                correct: 2,
+                explanation: `Cả thời gian rơi <span class="math">t = ${sqrt(frac('2h', 'g'))}</span> và tầm bay xa <span class="math">L = v<sub>0</sub>${sqrt(frac('2h', 'g'))}</span> đều độc lập với khối lượng của vật. Vì có cùng <span class="math">h</span> và <span class="math">v<sub>0</sub></span> nên hai bi chạm đất cùng lúc và có tầm xa bằng nhau.`
+            },
+            {
+                id: 7,
+                part: 'horizontal',
+                question: `Tại cùng một vị trí trên cao, người ta ném ngang vật (1) với vận tốc <span class="math">v<sub>01</sub></span> và đồng thời thả rơi tự do vật (2) không vận tốc đầu. Bỏ qua sức cản không khí, nhận xét nào sau đây đúng?`,
+                options: [
+                    'Vật (2) chạm đất trước vật (1).',
+                    'Vật (1) chạm đất trước vật (2).',
+                    'Hai vật chạm đất cùng một lúc.',
+                    'Vật nào có khối lượng lớn hơn sẽ chạm đất trước.'
+                ],
+                correct: 2,
+                explanation: `Chuyển động thành phần theo phương thẳng đứng của vật ném ngang chính là sự rơi tự do từ cùng độ cao <span class="math">h</span>. Do đó hai vật có cùng thời gian rơi <span class="math">t = ${sqrt(frac('2h', 'g'))}</span> và chạm đất cùng lúc.`
+            },
+            {
+                id: 8,
+                part: 'horizontal',
+                question: `Công thức tính thời gian rơi của vật bị ném ngang từ độ cao <span class="math">h</span> xuống mặt đất là`,
+                options: [
+                    `<span class="math">t = ${sqrt(frac('h', 'g'))}</span>.`,
+                    `<span class="math">t = ${sqrt(frac('2h', 'g'))}</span>.`,
+                    `<span class="math">t = ${frac('2h', 'g')}</span>.`,
+                    `<span class="math">t = ${frac('v<sub>0</sub>', 'g')}</span>.`
+                ],
+                correct: 1,
+                explanation: `Khi chạm đất, tọa độ thẳng đứng <span class="math">y = h</span>. Thay vào phương trình <span class="math">y = ${frac('1', '2')}gt<sup>2</sup></span> ta rút ra <span class="math">t = ${sqrt(frac('2h', 'g'))}</span>.`
+            },
+            {
+                id: 9,
+                part: 'horizontal',
+                question: `Tầm bay xa <span class="math">L</span> của một vật ném ngang từ độ cao <span class="math">h</span> với vận tốc ban đầu <span class="math">v<sub>0</sub></span> được xác định bằng biểu thức`,
+                options: [
+                    `<span class="math">L = v<sub>0</sub> · ${frac('2h', 'g')}</span>.`,
+                    `<span class="math">L = v<sub>0</sub>${sqrt(frac('h', '2g'))}</span>.`,
+                    `<span class="math">L = v<sub>0</sub>${sqrt(frac('2h', 'g'))}</span>.`,
+                    `<span class="math">L = v<sub>0</sub><sup>2</sup>${sqrt(frac('2h', 'g'))}</span>.`
+                ],
+                correct: 2,
+                explanation: `Tầm bay xa là quãng đường vật đi được theo phương ngang trong suốt thời gian rơi: <span class="math">L = x<sub>max</sub> = v<sub>0</sub> · t = v<sub>0</sub>${sqrt(frac('2h', 'g'))}</span>.`
+            },
+            {
+                id: 10,
+                part: 'horizontal',
+                question: `Nếu giữ nguyên độ cao điểm ném <span class="math">h</span> và tăng vận tốc ban đầu <span class="math">v<sub>0</sub></span> của vật ném ngang lên <span class="math">2</span> lần thì tầm bay xa của vật sẽ`,
+                options: [
+                    `tăng lên <span class="math">2</span> lần.`,
+                    `tăng lên <span class="math">4</span> lần.`,
+                    `giảm đi <span class="math">2</span> lần.`,
+                    'không thay đổi.'
+                ],
+                correct: 0,
+                explanation: `Từ công thức <span class="math">L = v<sub>0</sub>${sqrt(frac('2h', 'g'))}</span>, khi <span class="math">h</span> và <span class="math">g</span> không đổi thì tầm bay xa <span class="math">L</span> tỉ lệ thuận với vận tốc ban đầu <span class="math">v<sub>0</sub></span>. Tăng <span class="math">v<sub>0</sub></span> lên <span class="math">2</span> lần thì <span class="math">L</span> tăng lên <span class="math">2</span> lần.`
+            },
+            {
+                id: 11,
+                part: 'horizontal',
+                question: `Nếu giữ nguyên vận tốc ban đầu <span class="math">v<sub>0</sub></span> và tăng độ cao điểm ném <span class="math">h</span> lên <span class="math">4</span> lần thì tầm bay xa của vật ném ngang sẽ`,
+                options: [
+                    `tăng lên <span class="math">4</span> lần.`,
+                    `tăng lên <span class="math">2</span> lần.`,
+                    `tăng lên <span class="math">${sqrt('2')}</span> lần.`,
+                    `giảm đi <span class="math">2</span> lần.`
+                ],
+                correct: 1,
+                explanation: `Tầm bay xa <span class="math">L = v<sub>0</sub>${sqrt(frac('2h', 'g'))}</span> tỉ lệ thuận với căn bậc hai của độ cao (<span class="math">${sqrt('h')}</span>). Khi <span class="math">h</span> tăng lên <span class="math">4</span> lần thì <span class="math">${sqrt('h')}</span> tăng lên <span class="math">${sqrt('4')} = 2</span> lần, nên <span class="math">L</span> tăng <span class="math">2</span> lần.`
+            },
+            {
+                id: 12,
+                part: 'horizontal',
+                question: `Chọn hệ trục tọa độ <span class="math">Oxy</span> có gốc <span class="math">O</span> tại vị trí ném, trục <span class="math">Ox</span> hướng theo <span class="math">${vec('v')}<sub>0</sub></span>, trục <span class="math">Oy</span> thẳng đứng hướng xuống. Phương trình quỹ đạo của vật ném ngang là`,
+                options: [
+                    `<span class="math">y = ${frac('g', '2v<sub>0</sub>')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = ${frac('g', '2v<sub>0</sub><sup>2</sup>')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = ${frac('2g', 'v<sub>0</sub><sup>2</sup>')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = ${frac('v<sub>0</sub><sup>2</sup>', '2g')}x<sup>2</sup></span>.`
+                ],
+                correct: 1,
+                explanation: `Từ <span class="math">x = v<sub>0</sub>t ⇒ t = ${frac('x', 'v<sub>0</sub>')}</span>. Thay vào <span class="math">y = ${frac('1', '2')}gt<sup>2</sup></span> ta được phương trình quỹ đạo: <span class="math">y = ${frac('1', '2')}g(${frac('x', 'v<sub>0</sub>')})<sup>2</sup> = ${frac('g', '2v<sub>0</sub><sup>2</sup>')}x<sup>2</sup></span>.`
+            },
+            {
+                id: 13,
+                part: 'horizontal',
+                question: `Trong suốt quá trình chuyển động của vật ném ngang (chưa chạm đất), thành phần vận tốc theo phương nằm ngang <span class="math">v<sub>x</sub></span>`,
+                options: [
+                    'tăng tỉ lệ thuận với thời gian.',
+                    'giảm dần theo thời gian.',
+                    `luôn không đổi và bằng <span class="math">v<sub>0</sub></span>.`,
+                    'bằng không khi vật sắp chạm đất.'
+                ],
+                correct: 2,
+                explanation: `Do chuyển động theo phương ngang là chuyển động thẳng đều nên thành phần vận tốc ngang luôn bảo toàn: <span class="math">v<sub>x</sub> = v<sub>0</sub> = hằng số</span>.`
+            },
+            {
+                id: 14,
+                part: 'horizontal',
+                question: `Độ lớn vận tốc của vật ném ngang tại thời điểm <span class="math">t</span> trước khi chạm đất được tính bởi công thức`,
+                options: [
+                    `<span class="math">v = v<sub>0</sub> + gt</span>.`,
+                    `<span class="math">v = ${sqrt('v<sub>0</sub><sup>2</sup> + (gt)<sup>2</sup>')}</span>.`,
+                    `<span class="math">v = ${sqrt('v<sub>0</sub><sup>2</sup> + 2gt')}</span>.`,
+                    `<span class="math">v = v<sub>0</sub> − gt</span>.`
+                ],
+                correct: 1,
+                explanation: `Tại thời điểm <span class="math">t</span>, hai thành phần vận tốc vuông góc nhau là <span class="math">v<sub>x</sub> = v<sub>0</sub></span> và <span class="math">v<sub>y</sub> = gt</span>. Theo định lí Pythagore: <span class="math">v = ${sqrt('v<sub>x</sub><sup>2</sup> + v<sub>y</sub><sup>2</sup>')} = ${sqrt('v<sub>0</sub><sup>2</sup> + (gt)<sup>2</sup>')}</span>.`
+            },
+            {
+                id: 15,
+                part: 'horizontal',
+                question: 'Trong chuyển động ném ngang, gia tốc của vật tại mọi thời điểm có',
+                options: [
+                    `phương nằm ngang, độ lớn bằng <span class="math">g</span>.`,
+                    'phương tiếp tuyến với quỹ đạo, độ lớn tăng dần.',
+                    `phương thẳng đứng, chiều hướng xuống, độ lớn bằng <span class="math">g</span>.`,
+                    'độ lớn bằng không.'
+                ],
+                correct: 2,
+                explanation: `Vật chỉ chịu tác dụng của trọng lực <span class="math">${vec('P')} = m${vec('g')}</span> nên gia tốc toàn phần của vật luôn là gia tốc rơi tự do <span class="math">${vec('g')}</span> hướng thẳng đứng xuống dưới.`
+            },
+            {
+                id: 16,
+                part: 'horizontal',
+                question: `Một máy bay đang bay ngang ở độ cao <span class="math">h</span> với tốc độ không đổi <span class="math">v<sub>0</sub></span> thì thả rơi một gói hàng. Bỏ qua sức cản không khí, khi gói hàng chạm đất thì máy bay đang ở vị trí nào?`,
+                options: [
+                    'Ở phía trước điểm gói hàng chạm đất.',
+                    'Ở phía sau điểm gói hàng chạm đất.',
+                    'Ở ngay phía trên theo phương thẳng đứng so với điểm gói hàng chạm đất.',
+                    'Phụ thuộc vào khối lượng của gói hàng.'
+                ],
+                correct: 2,
+                explanation: `Gói hàng có vận tốc ngang ban đầu đúng bằng vận tốc <span class="math">v<sub>0</sub></span> của máy bay và được bảo toàn suốt quá trình rơi. Do đó tại mọi thời điểm, hoành độ của gói hàng và máy bay luôn trùng nhau.`
+            },
+            {
+                id: 17,
+                part: 'horizontal',
+                question: 'Người quan sát đứng yên trên mặt đất nhìn thấy quỹ đạo của gói hàng thả rơi từ một máy bay đang bay ngang với vận tốc không đổi là',
+                options: [
+                    'một đường thẳng đứng.',
+                    'một đường thẳng nghiêng.',
+                    'một nhánh parabol.',
+                    'một cung tròn.'
+                ],
+                correct: 2,
+                explanation: `Đối với người quan sát gắn với mặt đất, gói hàng thực hiện chuyển động ném ngang với vận tốc đầu <span class="math">v<sub>0</sub></span> của máy bay nên quỹ đạo là một nhánh parabol.`
+            },
+            {
+                id: 18,
+                part: 'horizontal',
+                question: 'Phi công ngồi trên máy bay đang bay ngang đều nhìn xuống gói hàng do chính máy bay thả rơi (bỏ qua sức cản không khí) sẽ thấy gói hàng chuyển động theo quỹ đạo',
+                options: [
+                    'là một đường thẳng đứng hướng xuống dưới.',
+                    'là một nhánh parabol hướng về phía sau máy bay.',
+                    'là một nhánh parabol hướng về phía trước máy bay.',
+                    'là một đường thẳng nằm ngang.'
+                ],
+                correct: 0,
+                explanation: `Trong hệ quy chiếu gắn với máy bay, vận tốc ngang tương đối của gói hàng bằng <span class="math">0</span> (<span class="math">v<sub>x,tương đối</sub> = v<sub>0</sub> − v<sub>0</sub> = 0</span>), gói hàng chỉ rơi thẳng đứng xuống dưới.`
+            },
+            {
+                id: 19,
+                part: 'horizontal',
+                question: `Khi vật ném ngang chạm đất, góc <span class="math">α</span> hợp bởi vectơ vận tốc chạm đất <span class="math">${vec('v')}</span> và phương thẳng đứng thỏa mãn hệ thức nào sau đây?`,
+                options: [
+                    `<span class="math">tan α = ${frac('gt', 'v<sub>0</sub>')}</span>.`,
+                    `<span class="math">tan α = ${frac('v<sub>0</sub>', 'gt')}</span>.`,
+                    `<span class="math">sin α = ${frac('v<sub>0</sub>', 'gt')}</span>.`,
+                    `<span class="math">cos α = ${frac('v<sub>0</sub>', 'gt')}</span>.`
+                ],
+                correct: 1,
+                explanation: `Cạnh đối của góc <span class="math">α</span> (góc hợp bởi <span class="math">${vec('v')}</span> và phương thẳng đứng) là <span class="math">v<sub>x</sub> = v<sub>0</sub></span>, cạnh kề là <span class="math">v<sub>y</sub> = gt</span>. Do đó <span class="math">tan α = ${frac('v<sub>x</sub>', 'v<sub>y</sub>')} = ${frac('v<sub>0</sub>', 'gt')}</span>.`
+            },
+            {
+                id: 20,
+                part: 'horizontal',
+                question: 'Điều nào sau đây <strong>không đúng</strong> khi nói về chuyển động ném ngang?',
+                options: [
+                    'Độ lớn vận tốc của vật tăng dần theo thời gian.',
+                    'Khoảng cách giữa vật và điểm ném theo phương ngang tăng tỉ lệ thuận với thời gian.',
+                    'Nếu tăng vận tốc ném ban đầu thì thời gian rơi của vật giảm đi.',
+                    `Hợp lực tác dụng lên vật trong suốt quá trình bay là trọng lực <span class="math">${vec('P')}</span>.`
+                ],
+                correct: 2,
+                explanation: `Phát biểu C sai vì thời gian rơi <span class="math">t = ${sqrt(frac('2h', 'g'))}</span> hoàn toàn không phụ thuộc vào vận tốc ném ban đầu <span class="math">v<sub>0</sub></span>.`
+            },
+
+            // --- PHẦN 2: CHUYỂN ĐỘNG NÉM XIÊN (21 - 40) ---
+            {
+                id: 21,
+                part: 'projectile',
+                question: `Chuyển động ném xiên từ mặt đất lên cao với vận tốc ban đầu <span class="math">${vec('v')}<sub>0</sub></span> hợp với phương ngang góc <span class="math">α</span> (<span class="math">0° &lt; α &lt; 90°</span>) có quỹ đạo là`,
+                options: [
+                    'một đường thẳng chếch lên.',
+                    'một đường parabol có bề lõm hướng xuống dưới.',
+                    'một đường parabol có bề lõm hướng lên trên.',
+                    'một nửa đường tròn.'
+                ],
+                correct: 1,
+                explanation: `Phương trình quỹ đạo của vật ném xiên là <span class="math">y = (tan α)x − ${frac('g', '2v<sub>0</sub><sup>2</sup>cos<sup>2</sup>α')}x<sup>2</sup></span>. Hệ số của <span class="math">x<sup>2</sup></span> mang dấu âm nên đây là đường parabol có bề lõm hướng xuống dưới.`
+            },
+            {
+                id: 22,
+                part: 'projectile',
+                question: `Chọn hệ trục tọa độ <span class="math">Oxy</span> có gốc <span class="math">O</span> tại vị trí ném trên mặt đất, trục <span class="math">Ox</span> nằm ngang hướng theo chiều ném, trục <span class="math">Oy</span> thẳng đứng hướng lên. Chuyển động của vật ném xiên theo trục <span class="math">Ox</span> là`,
+                options: [
+                    `chuyển động thẳng đều với vận tốc <span class="math">v<sub>x</sub> = v<sub>0</sub> cos α</span>.`,
+                    `chuyển động thẳng đều với vận tốc <span class="math">v<sub>x</sub> = v<sub>0</sub> sin α</span>.`,
+                    `chuyển động thẳng chậm dần đều với vận tốc đầu <span class="math">v<sub>0</sub> cos α</span>.`,
+                    `chuyển động thẳng nhanh dần đều với gia tốc <span class="math">g</span>.`
+                ],
+                correct: 0,
+                explanation: `Chiếu vectơ vận tốc ban đầu <span class="math">${vec('v')}<sub>0</sub></span> lên phương ngang <span class="math">Ox</span> ta được <span class="math">v<sub>0x</sub> = v<sub>0</sub> cos α</span>. Vì không có lực tác dụng theo phương ngang nên vật chuyển động thẳng đều với <span class="math">v<sub>x</sub> = v<sub>0</sub> cos α</span>.`
+            },
+            {
+                id: 23,
+                part: 'projectile',
+                question: `Trong hệ trục tọa độ <span class="math">Oxy</span> với trục <span class="math">Oy</span> thẳng đứng hướng lên, chuyển động thành phần của vật ném xiên theo trục <span class="math">Oy</span> là`,
+                options: [
+                    `chuyển động thẳng đều với vận tốc <span class="math">v<sub>0</sub> sin α</span>.`,
+                    `chuyển động thẳng biến đổi đều với gia tốc <span class="math">a<sub>y</sub> = −g</span>.`,
+                    `chuyển động thẳng biến đổi đều với gia tốc <span class="math">a<sub>y</sub> = +g</span>.`,
+                    'sự rơi tự do không vận tốc đầu.'
+                ],
+                correct: 1,
+                explanation: `Trục <span class="math">Oy</span> hướng lên trong khi gia tốc trọng trường <span class="math">${vec('g')}</span> hướng xuống nên <span class="math">a<sub>y</sub> = −g</span>. Vật chuyển động thẳng chậm dần đều khi đi lên và nhanh dần đều khi rơi xuống.`
+            },
+            {
+                id: 24,
+                part: 'projectile',
+                question: 'Khi vật được ném xiên đạt tới điểm cao nhất trên quỹ đạo (đỉnh parabol), vectơ vận tốc của vật lúc đó có đặc điểm gì?',
+                options: [
+                    'Độ lớn bằng không.',
+                    'Hướng thẳng đứng xuống dưới.',
+                    `Nằm ngang và có độ lớn bằng <span class="math">v<sub>0</sub> cos α</span>.`,
+                    `Nằm ngang và có độ lớn bằng <span class="math">v<sub>0</sub> sin α</span>.`
+                ],
+                correct: 2,
+                explanation: `Tại đỉnh cao nhất của quỹ đạo, thành phần vận tốc thẳng đứng triệt tiêu (<span class="math">v<sub>y</sub> = 0</span>), vật chỉ còn thành phần vận tốc ngang <span class="math">v<sub>x</sub> = v<sub>0</sub> cos α</span>.`
+            },
+            {
+                id: 25,
+                part: 'projectile',
+                question: 'Tại đỉnh cao nhất của quỹ đạo ném xiên, gia tốc của vật có độ lớn bằng',
+                options: [
+                    `<span class="math">0</span>.`,
+                    `<span class="math">g</span>.`,
+                    `<span class="math">g sin α</span>.`,
+                    `<span class="math">g cos α</span>.`
+                ],
+                correct: 1,
+                explanation: `Trong suốt quá trình bay (kể cả tại đỉnh quỹ đạo), vật luôn chịu tác dụng của trọng lực <span class="math">${vec('P')} = m${vec('g')}</span> nên gia tốc của vật luôn không đổi và bằng <span class="math">g</span>.`
+            },
+            {
+                id: 26,
+                part: 'projectile',
+                question: `Công thức tính độ cao cực đại <span class="math">H</span> mà vật ném xiên từ mặt đất đạt được là`,
+                options: [
+                    `<span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α', 'g')}</span>.`,
+                    `<span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α', '2g')}</span>.`,
+                    `<span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> cos<sup>2</sup>α', '2g')}</span>.`,
+                    `<span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', '2g')}</span>.`
+                ],
+                correct: 1,
+                explanation: `Áp dụng công thức độc lập thời gian theo phương <span class="math">Oy</span>: <span class="math">v<sub>y</sub><sup>2</sup> − v<sub>0y</sub><sup>2</sup> = −2gH</span>. Tại đỉnh <span class="math">v<sub>y</sub> = 0</span> và <span class="math">v<sub>0y</sub> = v<sub>0</sub> sin α</span>, suy ra <span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α', '2g')}</span>.`
+            },
+            {
+                id: 27,
+                part: 'projectile',
+                question: `Công thức tính tầm bay xa <span class="math">L</span> của vật được ném xiên từ mặt đất với vận tốc đầu <span class="math">v<sub>0</sub></span> và góc ném <span class="math">α</span> là`,
+                options: [
+                    `<span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> sin α', 'g')}</span>.`,
+                    `<span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', '2g')}</span>.`,
+                    `<span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', 'g')}</span>.`,
+                    `<span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> cos(2α)', 'g')}</span>.`
+                ],
+                correct: 2,
+                explanation: `Tầm bay xa <span class="math">L = v<sub>x</sub> · t = (v<sub>0</sub> cos α) · ${frac('2v<sub>0</sub> sin α', 'g')} = ${frac('v<sub>0</sub><sup>2</sup> · 2 sin α cos α', 'g')} = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', 'g')}</span>.`
+            },
+            {
+                id: 28,
+                part: 'projectile',
+                question: 'Thời gian tổng cộng kể từ lúc vật được ném xiên từ mặt đất cho đến khi rơi trở lại mặt đất được xác định bởi công thức',
+                options: [
+                    `<span class="math">t = ${frac('v<sub>0</sub> sin α', 'g')}</span>.`,
+                    `<span class="math">t = ${frac('2v<sub>0</sub> sin α', 'g')}</span>.`,
+                    `<span class="math">t = ${frac('2v<sub>0</sub> cos α', 'g')}</span>.`,
+                    `<span class="math">t = ${frac('v<sub>0</sub> sin(2α)', 'g')}</span>.`
+                ],
+                correct: 1,
+                explanation: `Thời gian đi lên tới đỉnh là <span class="math">t<sub>lên</sub> = ${frac('v<sub>0</sub> sin α', 'g')}</span>. Do tính đối xứng của parabol khi ném từ mặt đất, tổng thời gian bay là <span class="math">t = 2t<sub>lên</sub> = ${frac('2v<sub>0</sub> sin α', 'g')}</span>.`
+            },
+            {
+                id: 29,
+                part: 'projectile',
+                question: `Một vật được ném xiên từ mặt đất với tốc độ ban đầu <span class="math">v<sub>0</sub></span> không đổi. Để tầm bay xa của vật đạt giá trị lớn nhất thì góc ném <span class="math">α</span> hợp với phương ngang phải bằng`,
+                options: [
+                    `<span class="math">30°</span>.`,
+                    `<span class="math">45°</span>.`,
+                    `<span class="math">60°</span>.`,
+                    `<span class="math">90°</span>.`
+                ],
+                correct: 1,
+                explanation: `Tầm bay xa <span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', 'g')}</span> đạt cực đại khi <span class="math">sin(2α) = 1 ⇔ 2α = 90° ⇒ α = 45°</span>.`
+            },
+            {
+                id: 30,
+                part: 'projectile',
+                question: `Với cùng một tốc độ ban đầu <span class="math">v<sub>0</sub></span>, nếu tăng góc ném <span class="math">α</span> từ <span class="math">0°</span> đến <span class="math">90°</span> thì độ cao cực đại <span class="math">H</span> mà vật đạt được sẽ`,
+                options: [
+                    `tăng liên tục và đạt lớn nhất khi <span class="math">α = 90°</span>.`,
+                    `giảm liên tục từ giá trị lớn nhất về <span class="math">0</span>.`,
+                    `tăng từ <span class="math">0°</span> đến <span class="math">45°</span>, sau đó giảm từ <span class="math">45°</span> đến <span class="math">90°</span>.`,
+                    `không thay đổi vì <span class="math">v<sub>0</sub></span> không đổi.`
+                ],
+                correct: 0,
+                explanation: `Công thức <span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α', '2g')}</span>. Khi <span class="math">α</span> tăng từ <span class="math">0°</span> đến <span class="math">90°</span>, hàm <span class="math">sin α</span> đồng biến (tăng từ <span class="math">0</span> đến <span class="math">1</span>), nên <span class="math">H</span> tăng liên tục và đạt cực đại khi ném thẳng đứng lên (<span class="math">α = 90°</span>).`
+            },
+            {
+                id: 31,
+                part: 'projectile',
+                question: `Với cùng một tốc độ ban đầu <span class="math">v<sub>0</sub></span>, khi tăng góc ném <span class="math">α</span> từ <span class="math">0°</span> đến <span class="math">90°</span> thì tầm bay xa <span class="math">L</span> của vật sẽ`,
+                options: [
+                    'tăng liên tục.',
+                    'giảm liên tục.',
+                    `tăng đến giá trị cực đại tại <span class="math">α = 45°</span>, sau đó giảm dần về <span class="math">0</span> khi <span class="math">α = 90°</span>.`,
+                    `đạt cực đại tại <span class="math">α = 30°</span> và <span class="math">α = 60°</span>.`
+                ],
+                correct: 2,
+                explanation: `Khi <span class="math">α</span> chạy từ <span class="math">0° → 45° → 90°</span> thì <span class="math">2α</span> chạy từ <span class="math">0° → 90° → 180°</span>. Do đó <span class="math">sin(2α)</span> tăng từ <span class="math">0</span> lên <span class="math">1</span> (tại <span class="math">α = 45°</span>) rồi giảm về <span class="math">0</span> (tại <span class="math">α = 90°</span>).`
+            },
+            {
+                id: 32,
+                part: 'projectile',
+                question: `Hai vật được ném xiên từ cùng một vị trí trên mặt đất với cùng tốc độ ban đầu <span class="math">v<sub>0</sub></span>, dưới hai góc ném lần lượt là <span class="math">α<sub>1</sub> = 25°</span> và <span class="math">α<sub>2</sub> = 65°</span>. So sánh tầm bay xa <span class="math">L<sub>1</sub></span> và <span class="math">L<sub>2</sub></span> của hai vật:`,
+                options: [
+                    `<span class="math">L<sub>1</sub> &gt; L<sub>2</sub></span>.`,
+                    `<span class="math">L<sub>1</sub> &lt; L<sub>2</sub></span>.`,
+                    `<span class="math">L<sub>1</sub> = L<sub>2</sub></span>.`,
+                    `<span class="math">L<sub>2</sub> = 2L<sub>1</sub></span>.`
+                ],
+                correct: 2,
+                explanation: `Vì <span class="math">α<sub>1</sub> + α<sub>2</sub> = 25° + 65° = 90°</span> (hai góc phụ nhau) nên <span class="math">sin(2α<sub>1</sub>) = sin 50° = sin 130° = sin(2α<sub>2</sub>)</span>. Do đó hai vật có tầm bay xa bằng nhau (<span class="math">L<sub>1</sub> = L<sub>2</sub></span>).`
+            },
+            {
+                id: 33,
+                part: 'projectile',
+                question: `Hai vật được ném từ cùng một vị trí trên mặt đất với cùng tốc độ ban đầu <span class="math">v<sub>0</sub></span>, góc ném lần lượt là <span class="math">α<sub>1</sub> = 30°</span> và <span class="math">α<sub>2</sub> = 60°</span>. Nhận xét nào sau đây là <strong>sai</strong>?`,
+                options: [
+                    'Hai vật có tầm bay xa bằng nhau.',
+                    'Vật thứ hai đạt độ cao cực đại lớn hơn vật thứ nhất.',
+                    'Vật thứ hai có thời gian bay trong không trung lâu hơn vật thứ nhất.',
+                    'Hai vật chạm đất cùng một thời điểm.'
+                ],
+                correct: 3,
+                explanation: `Thời gian bay <span class="math">t = ${frac('2v<sub>0</sub> sin α', 'g')}</span>. Vì <span class="math">sin 60° &gt; sin 30°</span> nên vật thứ hai bay cao hơn và có thời gian bay lâu hơn vật thứ nhất, không thể chạm đất cùng thời điểm.`
+            },
+            {
+                id: 34,
+                part: 'projectile',
+                question: 'Trong chuyển động ném xiên từ mặt đất lên cao, tốc độ của vật có giá trị nhỏ nhất tại vị trí nào?',
+                options: [
+                    'Ngay lúc vừa ném.',
+                    'Ngay trước khi chạm đất.',
+                    'Tại điểm cao nhất của quỹ đạo.',
+                    'Tại vị trí có độ cao bằng một nửa độ cao cực đại.'
+                ],
+                correct: 2,
+                explanation: `Tốc độ toàn phần <span class="math">v = ${sqrt('v<sub>x</sub><sup>2</sup> + v<sub>y</sub><sup>2</sup>')}</span> với <span class="math">v<sub>x</sub> = v<sub>0</sub> cos α</span> không đổi. Do đó <span class="math">v</span> nhỏ nhất khi <span class="math">|v<sub>y</sub>| = 0</span>, tức là tại điểm cao nhất của quỹ đạo (<span class="math">v<sub>min</sub> = v<sub>0</sub> cos α</span>).`
+            },
+            {
+                id: 35,
+                part: 'projectile',
+                question: `Vật được ném xiên từ mặt đất với tốc độ ban đầu <span class="math">v<sub>0</sub></span> hợp với phương ngang góc <span class="math">α</span>. Khi vật rơi trở lại chạm mặt đất, tốc độ chạm đất của vật bằng`,
+                options: [
+                    `<span class="math">0</span>.`,
+                    `<span class="math">v<sub>0</sub></span>.`,
+                    `<span class="math">v<sub>0</sub> cos α</span>.`,
+                    `<span class="math">v<sub>0</sub> sin α</span>.`
+                ],
+                correct: 1,
+                explanation: `Khi rơi trở lại mặt đất (<span class="math">y = 0</span>), thành phần vận tốc thẳng đứng <span class="math">v<sub>y</sub> = −v<sub>0</sub> sin α</span>, còn <span class="math">v<sub>x</sub> = v<sub>0</sub> cos α</span>. Do đó tốc độ chạm đất <span class="math">v = ${sqrt('(v<sub>0</sub> cos α)<sup>2</sup> + (−v<sub>0</sub> sin α)<sup>2</sup>')} = v<sub>0</sub></span>.`
+            },
+            {
+                id: 36,
+                part: 'projectile',
+                question: `Chọn hệ trục tọa độ <span class="math">Oxy</span> có gốc <span class="math">O</span> tại vị trí ném trên mặt đất, trục <span class="math">Ox</span> nằm ngang hướng theo chiều ném, trục <span class="math">Oy</span> thẳng đứng hướng lên. Phương trình quỹ đạo của vật ném xiên là`,
+                options: [
+                    `<span class="math">y = (tan α)x − ${frac('g', '2v<sub>0</sub><sup>2</sup> cos<sup>2</sup>α')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = (tan α)x + ${frac('g', '2v<sub>0</sub><sup>2</sup> cos<sup>2</sup>α')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = (cot α)x − ${frac('g', '2v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α')}x<sup>2</sup></span>.`,
+                    `<span class="math">y = (sin α)x − ${frac('g', '2v<sub>0</sub><sup>2</sup>')}x<sup>2</sup></span>.`
+                ],
+                correct: 0,
+                explanation: `Rút <span class="math">t = ${frac('x', 'v<sub>0</sub> cos α')}</span> từ phương trình tọa độ <span class="math">x</span> rồi thay vào <span class="math">y = (v<sub>0</sub> sin α)t − ${frac('1', '2')}gt<sup>2</sup></span> ta được phương trình quỹ đạo chuẩn xác ở đáp án A.`
+            },
+            {
+                id: 37,
+                part: 'projectile',
+                question: 'Trong quá trình vật chuyển động ném xiên từ mặt đất lên tới đỉnh quỹ đạo, độ lớn vận tốc của vật thay đổi như thế nào?',
+                options: [
+                    'Tăng dần đều.',
+                    'Giảm dần.',
+                    'Không đổi.',
+                    `Giảm về <span class="math">0</span> rồi tăng lên.`
+                ],
+                correct: 1,
+                explanation: `Khi đi lên tới đỉnh quỹ đạo, thành phần <span class="math">v<sub>x</sub></span> không đổi còn <span class="math">v<sub>y</sub></span> giảm dần về <span class="math">0</span> nên độ lớn vận tốc <span class="math">v = ${sqrt('v<sub>x</sub><sup>2</sup> + v<sub>y</sub><sup>2</sup>')}</span> giảm dần (nhưng không giảm về <span class="math">0</span> vì <span class="math">α &lt; 90°</span>).`
+            },
+            {
+                id: 38,
+                part: 'projectile',
+                question: `Trong chuyển động ném xiên từ mặt đất, góc hợp bởi vectơ vận tốc <span class="math">${vec('v')}</span> và gia tốc trọng trường <span class="math">${vec('g')}</span> tại thời điểm vật đạt độ cao cực đại là`,
+                options: [
+                    `<span class="math">0°</span>.`,
+                    `<span class="math">45°</span>.`,
+                    `<span class="math">90°</span>.`,
+                    `<span class="math">180°</span>.`
+                ],
+                correct: 2,
+                explanation: `Tại độ cao cực đại, vectơ vận tốc <span class="math">${vec('v')}</span> nằm ngang, trong khi vectơ gia tốc trọng trường <span class="math">${vec('g')}</span> luôn thẳng đứng hướng xuống, nên hai vectơ vuông góc với nhau (góc <span class="math">90°</span>).`
+            },
+            {
+                id: 39,
+                part: 'projectile',
+                question: `Nếu giữ nguyên góc ném <span class="math">α</span> và tăng vận tốc ban đầu <span class="math">v<sub>0</sub></span> của vật ném xiên từ mặt đất lên <span class="math">3</span> lần thì tầm bay xa <span class="math">L</span> và độ cao cực đại <span class="math">H</span> thay đổi như thế nào?`,
+                options: [
+                    `<span class="math">L</span> tăng <span class="math">3</span> lần, <span class="math">H</span> tăng <span class="math">3</span> lần.`,
+                    `<span class="math">L</span> tăng <span class="math">9</span> lần, <span class="math">H</span> tăng <span class="math">9</span> lần.`,
+                    `<span class="math">L</span> tăng <span class="math">9</span> lần, <span class="math">H</span> tăng <span class="math">3</span> lần.`,
+                    `<span class="math">L</span> tăng <span class="math">3</span> lần, <span class="math">H</span> tăng <span class="math">9</span> lần.`
+                ],
+                correct: 1,
+                explanation: `Cả hai công thức <span class="math">L = ${frac('v<sub>0</sub><sup>2</sup> sin(2α)', 'g')}</span> và <span class="math">H = ${frac('v<sub>0</sub><sup>2</sup> sin<sup>2</sup>α', '2g')}</span> đều tỉ lệ thuận với bình phương vận tốc ban đầu (<span class="math">v<sub>0</sub><sup>2</sup></span>). Khi <span class="math">v<sub>0</sub></span> tăng <span class="math">3</span> lần thì cả <span class="math">L</span> và <span class="math">H</span> đều tăng <span class="math">3<sup>2</sup> = 9</span> lần.`
+            },
+            {
+                id: 40,
+                part: 'projectile',
+                question: 'Chọn phát biểu <strong>sai</strong> khi so sánh chuyển động ném ngang và chuyển động ném xiên (bỏ qua lực cản không khí):',
+                options: [
+                    `Cả hai chuyển động đều có gia tốc không đổi và bằng <span class="math">${vec('g')}</span>.`,
+                    'Thành phần vận tốc theo phương ngang của cả hai chuyển động đều được bảo toàn.',
+                    'Quỹ đạo của cả hai chuyển động trong hệ quy chiếu gắn với mặt đất đều là đường parabol.',
+                    'Tầm bay xa của cả hai chuyển động đều phụ thuộc vào khối lượng của vật được ném.'
+                ],
+                correct: 3,
+                explanation: 'Phát biểu D sai vì khi bỏ qua sức cản không khí, tầm bay xa của cả vật ném ngang và vật ném xiên đều hoàn toàn không phụ thuộc vào khối lượng của vật.'
+            }
+        ];
+
+        // Application State
+        let questions = [];
+        let userAnswers = {};
+        let currentMode = 'practice'; // 'practice' | 'exam'
+        let currentFilter = 'all';    // 'all' | 'horizontal' | 'projectile'
+        let examSubmitted = false;
+        let pendingConfirmAction = null;
+
+        const OPTION_LABELS = ['A', 'B', 'C', 'D'];
+
+        function initQuiz() {
+            questions = RAW_QUESTIONS.map(q => ({
+                ...q,
+                displayOptions: q.options.map((text, idx) => ({ text, originalIdx: idx }))
+            }));
+            userAnswers = {};
+            examSubmitted = false;
+            renderAll();
+        }
+
+        function getFilteredQuestions() {
+            if (currentFilter === 'horizontal') return questions.filter(q => q.part === 'horizontal');
+            if (currentFilter === 'projectile') return questions.filter(q => q.part === 'projectile');
+            return questions;
+        }
+
+        function renderAll() {
+            renderQuestions();
+            renderPalette();
+            updateProgress();
+            updateModeUI();
+            updateFilterUI();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            const filtered = getFilteredQuestions();
+            container.innerHTML = '';
+
+            filtered.forEach(q => {
+                const selectedIdx = userAnswers[q.id];
+                const isAnswered = selectedIdx !== undefined;
+                const showFeedback = (currentMode === 'practice' && isAnswered) || (currentMode === 'exam' && examSubmitted);
+                const correctDisplayIdx = q.displayOptions.findIndex(opt => opt.originalIdx === q.correct);
+                const isUserCorrect = isAnswered && (selectedIdx === correctDisplayIdx);
+
+                let cardClass = 'q-card';
+                if (showFeedback) {
+                    if (!isAnswered) cardClass += ' unanswered-warn';
+                    else if (isUserCorrect) cardClass += ' correct';
+                    else cardClass += ' wrong';
+                }
+
+                const partTag = q.part === 'horizontal'
+                    ? '<span class="part-tag horizontal">Ném ngang</span>'
+                    : '<span class="part-tag projectile">Ném xiên</span>';
+
+                let statusTag = '';
+                if (showFeedback) {
+                    if (!isAnswered) statusTag = '<span class="status-tag unanswered">Chưa trả lời</span>';
+                    else if (isUserCorrect) statusTag = '<span class="status-tag correct">✓ Chính xác</span>';
+                    else statusTag = '<span class="status-tag wrong">✕ Chưa đúng</span>';
+                }
+
+                const optionsHtml = q.displayOptions.map((opt, optIdx) => {
+                    const isSelected = selectedIdx === optIdx;
+                    const isCorrectOpt = optIdx === correctDisplayIdx;
+                    let btnClass = 'opt-btn';
+
+                    if (!showFeedback) {
+                        if (isSelected) btnClass += ' selected';
+                    } else {
+                        if (isCorrectOpt) btnClass += ' correct-ans';
+                        else if (isSelected && !isCorrectOpt) btnClass += ' wrong-ans';
+                        else btnClass += ' dimmed';
+                    }
+
+                    const disabledAttr = (currentMode === 'exam' && examSubmitted) ? 'disabled' : '';
+
+                    return `
+                        <button ${disabledAttr} class="${btnClass}" onclick="selectOption(${q.id}, ${optIdx})">
+                            <span class="opt-letter">${OPTION_LABELS[optIdx]}</span>
+                            <span class="opt-text">${opt.text}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                const explanationHtml = showFeedback ? `
+                    <div class="explanation-box">
+                        <div class="explanation-title">Đáp án đúng: ${OPTION_LABELS[correctDisplayIdx]} — Giải thích chi tiết:</div>
+                        <div>${q.explanation}</div>
+                    </div>
+                ` : '';
+
+                const card = document.createElement('div');
+                card.id = `question-card-${q.id}`;
+                card.className = cardClass;
+                card.innerHTML = `
+                    <div class="q-header">
+                        <div class="q-meta">
+                            <span class="q-num">Câu ${q.id}</span>
+                            ${partTag}
+                        </div>
+                        ${statusTag}
+                    </div>
+                    <div class="q-text">${q.question}</div>
+                    <div class="options-list">${optionsHtml}</div>
+                    ${explanationHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('question-palette');
+            const filtered = getFilteredQuestions();
+            palette.innerHTML = '';
+
+            filtered.forEach(q => {
+                const selectedIdx = userAnswers[q.id];
+                const isAnswered = selectedIdx !== undefined;
+                const showFeedback = (currentMode === 'practice' && isAnswered) || (currentMode === 'exam' && examSubmitted);
+                const correctDisplayIdx = q.displayOptions.findIndex(opt => opt.originalIdx === q.correct);
+                const isUserCorrect = isAnswered && (selectedIdx === correctDisplayIdx);
+
+                let cls = 'pal-btn';
+                if (showFeedback) {
+                    if (!isAnswered) cls += ' unanswered';
+                    else if (isUserCorrect) cls += ' correct';
+                    else cls += ' wrong';
+                } else if (isAnswered) {
+                    cls += ' answered';
+                }
+
+                const btn = document.createElement('button');
+                btn.className = cls;
+                btn.textContent = q.id;
+                btn.onclick = () => scrollToQuestion(q.id);
+                palette.appendChild(btn);
+            });
+        }
+
+        function selectOption(questionId, optionIdx) {
+            if (currentMode === 'exam' && examSubmitted) return;
+            userAnswers[questionId] = optionIdx;
+            renderQuestions();
+            renderPalette();
+            updateProgress();
+        }
+
+        function scrollToQuestion(questionId) {
+            const el = document.getElementById(`question-card-${questionId}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateProgress() {
+            const total = questions.length;
+            const answeredCount = Object.keys(userAnswers).length;
+            const percent = Math.round((answeredCount / total) * 100);
+            document.getElementById('progress-text').textContent = `${answeredCount} / ${total} câu`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        function setMode(mode) {
+            if (currentMode === mode) return;
+            currentMode = mode;
+            examSubmitted = false;
+            document.getElementById('result-banner').classList.remove('show');
+            renderAll();
+            showToast(mode === 'practice' ? 'Đã chuyển sang chế độ Luyện tập (Xem đáp án ngay)' : 'Đã chuyển sang chế độ Kiểm tra tính điểm');
+        }
+
+        function updateModeUI() {
+            const btnPractice = document.getElementById('btn-mode-practice');
+            const btnExam = document.getElementById('btn-mode-exam');
+            const submitBox = document.getElementById('exam-submit-box');
+            const practiceInfo = document.getElementById('practice-info-box');
+            const btnSubmit = document.getElementById('btn-submit-exam');
+
+            if (currentMode === 'practice') {
+                btnPractice.classList.add('active');
+                btnExam.classList.remove('active');
+                submitBox.classList.remove('show');
+                practiceInfo.style.display = 'block';
+            } else {
+                btnExam.classList.add('active');
+                btnPractice.classList.remove('active');
+                submitBox.classList.add('show');
+                practiceInfo.style.display = 'none';
+
+                if (examSubmitted) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.textContent = 'Đã nộp bài';
+                } else {
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Nộp bài & Chấm điểm';
+                }
+            }
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            renderAll();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateFilterUI() {
+            const tabs = {
+                all: document.getElementById('tab-all'),
+                horizontal: document.getElementById('tab-horizontal'),
+                projectile: document.getElementById('tab-projectile')
+            };
+            Object.keys(tabs).forEach(key => {
+                if (key === currentFilter) tabs[key].classList.add('active');
+                else tabs[key].classList.remove('active');
+            });
+        }
+
+        function confirmSubmitExam() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const total = questions.length;
+            const remaining = total - answeredCount;
+            const msg = remaining > 0
+                ? `Bạn mới hoàn thành ${answeredCount}/${total} câu (còn ${remaining} câu chưa chọn đáp án). Bạn có chắc chắn muốn nộp bài ngay bây giờ không?`
+                : `Bạn đã hoàn thành tất cả ${total}/${total} câu hỏi. Xác nhận nộp bài để xem điểm số và giải thích chi tiết?`;
+
+            openModal('Xác nhận nộp bài kiểm tra', msg, 'Nộp bài ngay', () => {
+                submitExam();
+            });
+        }
+
+        function submitExam() {
+            examSubmitted = true;
+            let correctCount = 0;
+            let wrongCount = 0;
+            let unansweredCount = 0;
+
+            questions.forEach(q => {
+                const selectedIdx = userAnswers[q.id];
+                if (selectedIdx === undefined) {
+                    unansweredCount++;
+                } else {
+                    const correctDisplayIdx = q.displayOptions.findIndex(opt => opt.originalIdx === q.correct);
+                    if (selectedIdx === correctDisplayIdx) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            const score = ((correctCount / questions.length) * 10).toFixed(2);
+            document.getElementById('score-display').textContent = score;
+            document.getElementById('stat-correct').textContent = correctCount;
+            document.getElementById('stat-wrong').textContent = wrongCount;
+            document.getElementById('stat-unanswered').textContent = unansweredCount;
+
+            let feedback = '';
+            if (score >= 9) feedback = 'Xuất sắc! Bạn đã nắm rất vững toàn bộ lý thuyết chuyển động ném ngang và ném xiên.';
+            else if (score >= 7) feedback = 'Làm tốt lắm! Hãy xem lại giải thích ở một vài câu nhầm lẫn để đạt điểm tối đa nhé.';
+            else if (score >= 5) feedback = 'Đạt yêu cầu! Bạn nên ôn lại các công thức quỹ đạo, tầm xa và độ cao cực đại.';
+            else feedback = 'Cần cố gắng thêm! Hãy chuyển sang chế độ Luyện tập để ôn kỹ từng câu hỏi nhé.';
+
+            document.getElementById('score-feedback').textContent = feedback;
+            document.getElementById('result-banner').classList.add('show');
+
+            renderAll();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            openModal('Làm lại bài trắc nghiệm', 'Toàn bộ lựa chọn hiện tại của bạn sẽ được xóa để bắt đầu làm lại từ đầu. Bạn có đồng ý không?', 'Làm lại từ đầu', () => {
+                userAnswers = {};
+                examSubmitted = false;
+                document.getElementById('result-banner').classList.remove('show');
+                questions = RAW_QUESTIONS.map(q => ({
+                    ...q,
+                    displayOptions: q.options.map((text, idx) => ({ text, originalIdx: idx }))
+                }));
+                renderAll();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showToast('Đã đặt lại toàn bộ bài làm!');
+            });
+        }
+
+        function shuffleQuiz() {
+            openModal('Xáo trộn câu hỏi và đáp án', 'Thứ tự các câu hỏi và vị trí các phương án A, B, C, D sẽ được đảo ngẫu nhiên, đồng thời xóa bài làm hiện tại. Tiếp tục?', 'Xáo trộn ngay', () => {
+                userAnswers = {};
+                examSubmitted = false;
+                document.getElementById('result-banner').classList.remove('show');
+
+                const shuffleArr = (arr) => {
+                    const copy = [...arr];
+                    for (let i = copy.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [copy[i], copy[j]] = [copy[j], copy[i]];
+                    }
+                    return copy;
+                };
+
+                questions = shuffleArr(RAW_QUESTIONS).map(q => ({
+                    ...q,
+                    displayOptions: shuffleArr(q.options.map((text, idx) => ({ text, originalIdx: idx })))
+                }));
+
+                renderAll();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showToast('Đã xáo trộn ngẫu nhiên câu hỏi và đáp án!');
+            });
+        }
+
+        function openModal(title, message, confirmText, onConfirm) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            const confirmBtn = document.getElementById('modal-confirm');
+            confirmBtn.textContent = confirmText;
+            pendingConfirmAction = onConfirm;
+
+            confirmBtn.onclick = () => {
+                closeModal();
+                if (pendingConfirmAction) pendingConfirmAction();
+            };
+
+            document.getElementById('custom-modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.remove('show');
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        window.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
